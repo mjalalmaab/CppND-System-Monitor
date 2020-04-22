@@ -33,7 +33,7 @@ vector<Process>& System::Processes() {
         process.ram = LinuxParser::Ram(pid);
         processes_.push_back(process);
     }
-    return processes_; }
+    return processes_; }  
 
 // Return the system's kernel identifier (string)
 std::string System::Kernel() { return kernel_; }

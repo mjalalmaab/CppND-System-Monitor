@@ -29,7 +29,7 @@ vector<Process>& System::Processes() {
     //std::cout << "\n***pidSize**" <<pidSize <<"*******\n";
     //std::cout << "\n**processes_.size()***" <<processes_.size() <<"*******\n";
 
-    if (processes_.size()!=pidSize){
+    if (int(processes_.size())!=int(pidSize)){
         processes_.resize(pidSize);
     }
     //std::cout << "\n**processes_.size()***" <<processes_.size() <<"*******\n";

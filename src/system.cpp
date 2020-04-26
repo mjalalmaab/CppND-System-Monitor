@@ -3,6 +3,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "process.h"
 #include "processor.h"
@@ -20,20 +21,33 @@ Processor& System::Cpu() {
     //Processor cpu_;
     return cpu_; }
 
-// TODO: Return a container composed of the system's processes
+// Return a container composed of the system's processes
 vector<Process>& System::Processes() { 
     vector <int> pids=LinuxParser::Pids();
     int pidSize = pids.size();
     //processes_.clear();
-    for (int i=0; i<pidSize;i++){
-        Process process;
-        int pid = pids[i];
-        process.pid =  (pid);
-        process.command = LinuxParser::Command(pid);
-        process.ram = LinuxParser::Ram(pid);
-        processes_.push_back(process);
+    //std::cout << "\n***pidSize**" <<pidSize <<"*******\n";
+    //std::cout << "\n**processes_.size()***" <<processes_.size() <<"*******\n";
+
+    if (processes_.size()!=pidSize){
+        processes_.resize(pidSize);
     }
-    return processes_; }  
+    //std::cout << "\n**processes_.size()***" <<processes_.size() <<"*******\n";
+
+    for (int i=0; i<pidSize;i++){
+        int pid = pids[i];
+        processes_.at(i).pid =  (pid);
+        processes_.at(i).command = LinuxParser::Command(pid);
+        processes_.at(i).ram = LinuxParser::Ram(pid);
+        processes_.at(i).user = LinuxParser::Uid(pid);
+        processes_.at(i).cpuUtil = float(LinuxParser::ActiveJiffies(pid))/float(cpu_.totaltime);
+        processes_.at(i).uptime  = LinuxParser::UpTime(pid);
+    }
+    std::sort(processes_.begin(),processes_.end());
+    std::reverse(processes_.begin(),processes_.end());
+    //std::cout << processes_.size() <<"*******\n";
+    return processes_;
+     }  
 
 // Return the system's kernel identifier (string)
 std::string System::Kernel() { return kernel_; }

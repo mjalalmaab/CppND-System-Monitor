@@ -7,6 +7,8 @@ class Processor {
 
   // TODO: Declare any necessary private members
  private:
+ int totaltime;
+ friend class System;
 };
 
 #endif

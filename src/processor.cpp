@@ -33,7 +33,7 @@ float Processor::Utilization() {
     //std::cout << "idlealltime" << idlealltime <<"\n";  
     int systemalltime = system + irq + softirq;
     int virtalltime = guest + guest_nice;
-    int totaltime = usertime + nicetime + systemalltime + idlealltime + steal + virtalltime;
+    totaltime = usertime + nicetime + systemalltime + idlealltime + steal + virtalltime;
     float cpuPercetn = float(totaltime-idlealltime)/float(totaltime);
     return cpuPercetn;
  }
